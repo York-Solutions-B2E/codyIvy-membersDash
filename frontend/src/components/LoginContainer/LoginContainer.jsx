@@ -5,14 +5,16 @@ import { useGoogleLogin } from "@react-oauth/google";
 
 export default function LoginContainer({ onLogin }) {
   const login = useGoogleLogin({
+    flow: "auth-code",
     onSuccess: (tokenResponse) => {
       console.log("google login success!", tokenResponse);
       if (onLogin) {
-        onLogin(tokenResponse);
+        onLogin(tokenResponse.code);
       }
     },
     onError: (errorResponse) =>
       console.log("google login error!", errorResponse),
+    scope: "openid profile email",
   });
   return (
     <Box
