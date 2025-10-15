@@ -16,6 +16,9 @@ public class UserDataInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        if (!userRepository.existsByAuthSub("google-sub-123")) {
+            
+        
         User user = User.builder()
                 .authProvider("google")
                 .authSub("google-sub-123")
@@ -23,6 +26,6 @@ public class UserDataInitializer implements ApplicationRunner {
                 .name("Test User")
                 .build();
         userRepository.save(user);
-        System.out.println("User saved: " + user);
+        System.out.println("User saved: " + user);}
     }
 }
