@@ -4,18 +4,48 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { useGoogleLogin } from "@react-oauth/google";
 
 export default function LoginContainer({ onLogin }) {
+  const [errorMsg, setErrorMsg] = React.useState(null);
+
+  const handleLogin = async (code) => {
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/google", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("Server response:", data);
+
+      if (onLogin) {
+        onLogin(data);
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      setErrorMsg("Login failed. Please try again.");
+    }
+  };
+
   const login = useGoogleLogin({
     flow: "auth-code",
     onSuccess: (tokenResponse) => {
+      setErrorMsg(null);
       console.log("google login success!", tokenResponse);
-      if (onLogin) {
-        onLogin(tokenResponse.code);
-      }
+      handleLogin(tokenResponse.code);
     },
-    onError: (errorResponse) =>
-      console.log("google login error!", errorResponse),
+    onError: (errorResponse) => {
+      setErrorMsg("Login failed. Please try again.");
+      console.log("google login error!", errorResponse);
+    },
     scope: "openid profile email",
   });
+
   return (
     <Box
       sx={{
@@ -52,6 +82,11 @@ export default function LoginContainer({ onLogin }) {
         >
           Sign in with Google
         </Button>
+        {errorMsg && (
+          <Typography color="error" sx={{ mt: 2 }}>
+            {errorMsg}
+          </Typography>
+        )}
       </Paper>
     </Box>
   );
