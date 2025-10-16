@@ -15,21 +15,16 @@ function App() {
   const [user, setUser] = React.useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (tokenResponse) => {
-    try {
-      const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-        headers: {
-          Authorization: `Bearer ${tokenResponse.access_token}`,
-        },
-      });
+  React.useEffect(() => {
+    if (user) {
+      console.log("User is logged in:", user);
+    }
+  }, [user]);
 
-      const profile = await res.json();
-      setUser(profile);
-      console.log("User info:", profile);
-      navigate("/dashboard", { replace: true });
-    } catch (error) {
-      console.error("Failed to fetch user info:", error);
-    }}
+  const handleLogin = (tokenResponse) => {
+    setUser(tokenResponse);
+    navigate("/dashboard", { replace: true });
+  };
 
     return (
       <>

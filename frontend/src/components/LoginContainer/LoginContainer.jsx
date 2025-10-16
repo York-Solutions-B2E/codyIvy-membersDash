@@ -22,9 +22,11 @@ export default function LoginContainer({ onLogin }) {
 
       const data = await response.json();
       console.log("Server response:", data);
+      setErrorMsg(null);
 
+      const {user, tokens} = data;
       if (onLogin) {
-        onLogin(data);
+        onLogin(data.user_info ); // Pass user info
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -36,7 +38,6 @@ export default function LoginContainer({ onLogin }) {
     flow: "auth-code",
     onSuccess: (tokenResponse) => {
       setErrorMsg(null);
-      console.log("google login success!", tokenResponse);
       handleLogin(tokenResponse.code);
     },
     onError: (errorResponse) => {
