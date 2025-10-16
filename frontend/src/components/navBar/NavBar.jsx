@@ -4,9 +4,9 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { Avatar } from "@mui/material";
 
 export default function NavBar({ user, onSignOut }) {
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -14,9 +14,23 @@ export default function NavBar({ user, onSignOut }) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Members Benefits Dashboard
           </Typography>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              alignItems: "center",
+              gap: 1, // adds spacing between text and avatar
+            }}
+          >
             {user ? `Welcome, ${user.name}` : "Not signed in"}
+            {user && (
+              <Avatar src={user.picture} sx={{ width: 32, height: 32 }} />
+            )}
           </Typography>
+
           {user && (
             <Button color="inherit" onClick={onSignOut}>
               Sign Out
