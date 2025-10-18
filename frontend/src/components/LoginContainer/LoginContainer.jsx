@@ -25,9 +25,11 @@ export default function LoginContainer({ onLogin }) {
       setErrorMsg(null);
 
       const {user, tokens} = data;
+
       if (onLogin) {
         onLogin(data.user_info ); // Pass user info
       }
+      
     } catch (error) {
       console.error("Login failed:", error);
       setErrorMsg("Login failed. Please try again.");

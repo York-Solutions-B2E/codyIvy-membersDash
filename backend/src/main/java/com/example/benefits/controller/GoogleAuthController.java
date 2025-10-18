@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.benefits.repository.UserRepository;
+import com.example.benefits.dto.GoogleAuthRequest;
 
 import java.util.Map;
 
@@ -33,8 +34,8 @@ public class GoogleAuthController {
     private String googleRedirectUri;
 
     @PostMapping
-    public ResponseEntity<?> exchangeCode(@RequestBody Map<String, String> body) {
-        String code = body.get("code");
+    public ResponseEntity<?> exchangeCode(@RequestBody GoogleAuthRequest body) {
+        String code = body.getCode();
         if (code == null) {
             return ResponseEntity.badRequest().body("Missing code");
         }
