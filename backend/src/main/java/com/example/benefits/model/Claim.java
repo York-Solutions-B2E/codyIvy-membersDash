@@ -23,7 +23,7 @@ public class Claim {
     @GeneratedValue
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String claimNumber; // human-friendly key for UI
 
     @ManyToOne
