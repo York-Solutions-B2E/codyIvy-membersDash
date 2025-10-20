@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.http.*;
 import com.example.benefits.model.User;
+import com.example.benefits.model.Member;
+import com.example.benefits.repository.MemberRepository;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -12,16 +14,20 @@ import org.springframework.web.client.RestTemplate;
 import com.example.benefits.repository.UserRepository;
 import com.example.benefits.dto.GoogleAuthRequest;
 
+
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth/google")
 public class GoogleAuthController {
+
+    private final MemberRepository memberRepository;
     private final RestTemplate restTemplate = new RestTemplate();
     private final UserRepository userRepository;
 
-    public GoogleAuthController(UserRepository userRepository) {
+    public GoogleAuthController(UserRepository userRepository, MemberRepository memberRepository) {
         this.userRepository = userRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Value("${google.client.id}")
@@ -86,7 +92,7 @@ public class GoogleAuthController {
             String email = (String) userInfo.get("email");
             String name = (String) userInfo.get("name");
 
-            userRepository.findByAuthProviderAndAuthSub("google", sub).orElseGet(() -> {
+            User user = userRepository.findByAuthProviderAndAuthSub("google", sub).orElseGet(() -> {
                 User newUser = User.builder()
                 .authProvider("google")
                 .authSub(sub)
@@ -94,6 +100,16 @@ public class GoogleAuthController {
                 .name(name)
                 .build();
                 return userRepository.save(newUser);
+            });
+
+            memberRepository.findByUser(user).orElseGet(() -> {
+                Member newMember = Member.builder()
+                .user(user)
+                .firstName((String) userInfo.get("given_name"))
+                .lastName((String) userInfo.get("family_name"))
+                .email(email)
+                .build();
+                return memberRepository.save(newMember);
             });
             
 

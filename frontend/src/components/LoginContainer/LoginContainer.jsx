@@ -21,15 +21,14 @@ export default function LoginContainer({ onLogin }) {
       }
 
       const data = await response.json();
-      console.log("Server response:", data);
       setErrorMsg(null);
 
       const {user, tokens} = data;
 
       if (onLogin) {
-        onLogin(data.user_info ); // Pass user info
+        onLogin(data.tokens ); // Pass user info
       }
-      
+
     } catch (error) {
       console.error("Login failed:", error);
       setErrorMsg("Login failed. Please try again.");

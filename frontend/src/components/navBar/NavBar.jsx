@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { Avatar } from "@mui/material";
+
 
 export default function NavBar({ user, onSignOut }) {
   return (
@@ -25,10 +25,8 @@ export default function NavBar({ user, onSignOut }) {
               gap: 1, // adds spacing between text and avatar
             }}
           >
-            {user ? `Welcome, ${user.name}` : "Not signed in"}
-            {user && (
-              <Avatar src={user.picture} sx={{ width: 32, height: 32 }} />
-            )}
+            {user ? `Welcome, ${user.firstName} ${user.lastName}` : "Not signed in"}
+            
           </Typography>
 
           {user && (

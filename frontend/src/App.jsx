@@ -13,6 +13,8 @@ import RequireAuth from "./components/RequireAuth/RequireAuth.jsx";
 
 function App() {
   const [user, setUser] = React.useState(null);
+  const [idToken, setIdToken] = React.useState(null);
+
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -21,33 +23,49 @@ function App() {
     }
   }, [user]);
 
-  const handleLogin = (tokenResponse) => {
-    setUser(tokenResponse);
-    navigate("/dashboard", { replace: true });
+  const handleLogin = async (tokenResponse) => {
+    setIdToken(tokenResponse.id_token);
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${tokenResponse.id_token}`,
+        },
+      });
+      if (response.ok) {
+        const userInfo = await response.json();
+        setUser(userInfo);
+        navigate("/dashboard", { replace: true });
+      } else {
+        console.error("Failed to fetch user info");
+      }
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+    }
   };
 
-    return (
-      <>
-        <NavBar
-          user={user}
-          onSignOut={() => {
-            setUser(null);
-            navigate("/", { replace: true });
-          }}
+  return (
+    <>
+      <NavBar
+        user={user}
+        onSignOut={() => {
+          setUser(null);
+          navigate("/", { replace: true });
+        }}
+      />
+      <Routes>
+        <Route path="/" element={<Login onLogin={handleLogin} />} />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth user={user}>
+              <Dashboard user={user} />
+            </RequireAuth>
+          }
         />
-        <Routes>
-          <Route path="/" element={<Login onLogin={handleLogin} />} />
-          <Route
-            path="/dashboard"
-            element={
-              <RequireAuth user={user}>
-                <Dashboard user={user} />
-              </RequireAuth>
-            }
-          />
-        </Routes>
-      </>
-    );
-  };
+      </Routes>
+    </>
+  );
+}
 
 export default App;
