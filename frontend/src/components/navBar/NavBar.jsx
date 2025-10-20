@@ -25,7 +25,7 @@ export default function NavBar({ user, onSignOut }) {
               gap: 1, // adds spacing between text and avatar
             }}
           >
-            {user ? `Welcome, ${user.firstName} ${user.lastName}` : "Not signed in"}
+            {user ? `Welcome, ${user.name}` : "Not signed in"}
             
           </Typography>
 

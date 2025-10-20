@@ -8,6 +8,5 @@ import lombok.*;
 public class AuthMeDTO {
     private UUID userId;
     private String email;
-    private String firstName;
-    private String lastName;
+    private String name;
 }

@@ -38,10 +38,7 @@ public class AuthMeController {
         AuthMeDTO dto = new AuthMeDTO();
         dto.setUserId(user.getId());
         dto.setEmail(member.getEmail());
-        if (member != null) {
-            dto.setFirstName(member.getFirstName());
-            dto.setLastName(member.getLastName());
-        }
+        dto.setName(user.getName());
         return ResponseEntity.ok(dto);
     }
 }

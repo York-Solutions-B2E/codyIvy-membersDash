@@ -1,8 +1,11 @@
 package com.example.benefits.model;
 
+import java.time.LocalDate;
 import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
+
 
 @Entity
 @Data
@@ -22,6 +25,10 @@ public class Member {
 
     private String firstName;
     private String lastName;
+    private LocalDate dateOfBirth;
     private String email;
-    
+    private String phone;
+    private String address;
+    private List<Enrollment> enrollments;
+
 }
