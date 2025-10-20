@@ -2,6 +2,9 @@ package com.example.benefits.model;
 
 import java.time.LocalDate;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -29,6 +32,9 @@ public class Member {
     private String email;
     private String phone;
     private String address;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Enrollment> enrollments;
 
 }

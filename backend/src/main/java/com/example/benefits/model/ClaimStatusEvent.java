@@ -5,6 +5,8 @@ import lombok.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "claim_status_events")
 @Getter
@@ -19,6 +21,7 @@ public class ClaimStatusEvent {
 
     @ManyToOne
     @JoinColumn(name = "claim_id", nullable = false)
+    @JsonBackReference
     private Claim claim;
 
     @Enumerated(EnumType.STRING)

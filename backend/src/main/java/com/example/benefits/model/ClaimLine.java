@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "claim_lines")
@@ -19,6 +20,7 @@ public class ClaimLine {
 
     @ManyToOne
     @JoinColumn(name = "claim_id", nullable = false)
+    @JsonBackReference
     private Claim claim;
 
     @Column(nullable = false)

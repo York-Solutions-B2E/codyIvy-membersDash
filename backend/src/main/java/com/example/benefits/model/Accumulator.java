@@ -5,6 +5,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "accumulators")
 @Getter
@@ -19,6 +21,7 @@ public class Accumulator {
 
     @ManyToOne
     @JoinColumn(name = "enrollment_id", nullable = false)
+    @JsonBackReference
     private Enrollment enrollment;
 
     @Enumerated(EnumType.STRING)

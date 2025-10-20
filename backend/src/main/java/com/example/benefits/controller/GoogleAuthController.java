@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.benefits.dto.GoogleAuthRequest;
 import com.example.benefits.service.GoogleAuthService;
+import com.example.benefits.service.DummyDataService;
 
 import java.util.Map;
 
@@ -23,9 +24,11 @@ public class GoogleAuthController {
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final GoogleAuthService googleAuthService;
+    private final DummyDataService dummyDataService;
 
-    public GoogleAuthController(GoogleAuthService googleAuthService) {
+    public GoogleAuthController(GoogleAuthService googleAuthService, DummyDataService dummyDataService) {
         this.googleAuthService = googleAuthService;
+        this.dummyDataService = dummyDataService;
     }
 
     @Value("${google.client.id}")
@@ -89,6 +92,7 @@ public class GoogleAuthController {
            
             User user = googleAuthService.findOrCreateUser(userInfo);
             Member member = googleAuthService.findOrCreateMember(user, userInfo);
+            dummyDataService.generateDummyData(member);
 
             return ResponseEntity.ok(Map.of(
                     "tokens", tokenData,

@@ -8,6 +8,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "claims")
@@ -58,9 +60,11 @@ public class Claim {
     private BigDecimal totalMemberResponsibility;
 
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ClaimLine> lines;
 
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ClaimStatusEvent> statusHistory;
 
     @Column(nullable = false)

@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "enrollments")
 @Getter
@@ -20,6 +23,7 @@ public class Enrollment {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
+    @JsonBackReference
     private Member member;
 
     @ManyToOne
@@ -35,6 +39,7 @@ public class Enrollment {
     @Column(nullable = false)
     private Boolean active;
 
-    @OneToMany(mappedBy = "enrollmentId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Accumulator> accumulators;
 }
