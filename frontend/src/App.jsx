@@ -19,7 +19,7 @@ function App() {
 
   React.useEffect(() => {
     if (user) {
-      console.log("User is logged in:", user);
+      navigate("/dashboard", { replace: true });
     }
   }, [user]);
 
@@ -35,7 +35,7 @@ function App() {
       if (response.ok) {
         const userInfo = await response.json();
         setUser(userInfo);
-        navigate("/dashboard", { replace: true });
+        
       } else {
         console.error("Failed to fetch user info");
       }

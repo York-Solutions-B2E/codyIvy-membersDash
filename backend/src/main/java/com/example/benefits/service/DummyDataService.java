@@ -94,6 +94,7 @@ public class DummyDataService {
         Provider provider = Provider.builder()
                 .name("HealthCare Clinic")
                 .address("123 Main St, Anytown, USA")
+                .specialty("Heart")
                 .phoneNumber("555-123-4567")
                 .build();
         provider = providerRepository.save(provider);
