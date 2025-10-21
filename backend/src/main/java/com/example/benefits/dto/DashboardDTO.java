@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 public class DashboardDTO {
     private ActivePlanDTO activePlan;
-    // private List<AccumulatorDTO> accumulators;
+    private List<AccumulatorDTO> accumulators;
     // private List<ClaimSummaryDTO> recentClaims;
 
 }

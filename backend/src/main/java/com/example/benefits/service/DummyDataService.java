@@ -133,7 +133,7 @@ public class DummyDataService {
         claimLineRepository.save(line);
 
         // 7. CLAIM STATUS EVENTS
-        // 7. ClaimStatusEvent
+      
         ClaimStatusEvent event = ClaimStatusEvent.builder()
                 .claim(claim)
                 .status(ClaimStatus.SUBMITTED)
