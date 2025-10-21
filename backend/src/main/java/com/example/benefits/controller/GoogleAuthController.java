@@ -11,7 +11,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-
 import com.example.benefits.dto.GoogleAuthRequest;
 import com.example.benefits.service.GoogleAuthService;
 import com.example.benefits.service.DummyDataService;
@@ -89,7 +88,6 @@ public class GoogleAuthController {
 
             Map<String, Object> userInfo = (Map<String, Object>) userInfoResponse.getBody();
 
-           
             User user = googleAuthService.findOrCreateUser(userInfo);
             Member member = googleAuthService.findOrCreateMember(user, userInfo);
             dummyDataService.generateDummyData(member);
