@@ -1,28 +1,34 @@
-import React from 'react'
+import React from "react";
+import { useEffect } from "react";
+import DashboardContainer from "../../components/DashboardContainer/DashboardContainer";
 
-export default function Dashboard() {
+export default function Dashboard({ idToken }) {
   const [dashboardData, setDashboardData] = React.useState(null);
 
-
   useEffect(() => {
-  fetch("/api/dashboard", {
-    headers: {
-      Authorization: `Bearer ${idToken}`
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-      setDashboardData(data)
-      console.log("Dashboard data:", data);
+    fetch("/api/dashboard", {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
     })
-    .catch(err => {
-      console.error("Error fetching dashboard data:", err);
-    });
-}, [idToken]);
+      .then(async (res) => await res.json())
+      .then((data) => {
+        setDashboardData(data);
+        console.log("Dashboard data:", data);
+      })
+      .catch((err) => {
+        console.error("Error fetching dashboard data:", err);
+      });
+  }, [idToken]);
 
   return (
     <div>
-      <h1>dashboard</h1>
+      <h1>Dashboard</h1>
+      {dashboardData ? (
+        <DashboardContainer dashboardData={dashboardData} />
+      ) : (
+        <div>Loading dashboard...</div>
+      )}
     </div>
-  )
+  );
 }

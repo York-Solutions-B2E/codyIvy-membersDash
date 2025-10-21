@@ -8,4 +8,5 @@ import com.example.benefits.model.User;
 
 public interface MemberRepository extends JpaRepository<Member, UUID> {
     Optional<Member> findByUser(User user);
+    Member findByEmail(String email);
 }

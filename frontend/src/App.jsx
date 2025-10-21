@@ -59,7 +59,7 @@ function App() {
           path="/dashboard"
           element={
             <RequireAuth user={user}>
-              <Dashboard user={user} />
+              <Dashboard idToken={idToken} user={user} />
             </RequireAuth>
           }
         />
