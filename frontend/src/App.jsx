@@ -10,6 +10,7 @@ import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import Login from "./pages/login/Login";
 import React from "react";
 import RequireAuth from "./components/RequireAuth/RequireAuth.jsx";
+import ClaimsList from "./pages/claimsList/ClaimsList.jsx";
 
 function App() {
   const [user, setUser] = React.useState(null);
@@ -35,7 +36,6 @@ function App() {
       if (response.ok) {
         const userInfo = await response.json();
         setUser(userInfo);
-        
       } else {
         console.error("Failed to fetch user info");
       }
@@ -60,6 +60,14 @@ function App() {
           element={
             <RequireAuth user={user}>
               <Dashboard idToken={idToken} user={user} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/claims"
+          element={
+            <RequireAuth user={user}>
+              <ClaimsList idToken={idToken} />
             </RequireAuth>
           }
         />

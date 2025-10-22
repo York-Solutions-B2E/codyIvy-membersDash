@@ -2,9 +2,11 @@ import React from "react";
 import { useEffect } from "react";
 import DashboardContainer from "../../components/DashboardContainer/DashboardContainer";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard({ idToken }) {
   const [dashboardData, setDashboardData] = React.useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/api/dashboard", {
@@ -30,7 +32,7 @@ export default function Dashboard({ idToken }) {
       ) : (
         <div>Loading dashboard...</div>
       )}
-      <Button variant="contained" color="primary">
+      <Button variant="contained" color="primary" onClick={() => navigate('/claims')}>
         View All Claims
       </Button>
     </div>

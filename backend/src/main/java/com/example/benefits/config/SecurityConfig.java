@@ -15,7 +15,8 @@ public class SecurityConfig {
             .cors(cors -> {}) // enable CORS from WebConfig
             .csrf(csrf -> csrf.disable()) // disable CSRF for simplicity in dev
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/me").authenticated() // allow auth endpoints
+                .requestMatchers("/api/auth/me", "/api/claims").authenticated() // allow auth endpoints
+                
                 .anyRequest().permitAll() // allow everything for now
             )
             .oauth2ResourceServer(oauth2 -> oauth2

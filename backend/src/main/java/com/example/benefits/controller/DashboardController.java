@@ -79,7 +79,6 @@ public class DashboardController {
                         claim.getTotalMemberResponsibility().doubleValue()))
                 .collect(Collectors.toList());
 
-                
         return new DashboardDTO(activePlanDTO, accumulatorDTOs, recentClaims);
     }
 

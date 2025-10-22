@@ -4,17 +4,50 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
+import { NavLink } from "react-router-dom";
 
 export default function NavBar({ user, onSignOut }) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, }}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar >
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Members Benefits Dashboard
+            Members Benefits
           </Typography>
-
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+            }}
+          >
+            <Button
+              component={NavLink}
+              to="/dashboard"
+              sx={{
+                color: "inherit",
+                fontWeight: 600,
+                textTransform: "none",
+                borderBottom: ({ isActive }) =>
+                  isActive ? "2px solid #1976d2" : "none",
+              }}
+              // NavLink gives "isActive" prop to sx!
+            >
+              Dashboard
+            </Button>
+            <Button
+              component={NavLink}
+              to="/claims"
+              sx={{
+                color: "inherit",
+                fontWeight: 600,
+                textTransform: "none",
+                borderBottom: ({ isActive }) =>
+                  isActive ? "2px solid #1976d2" : "none",
+              }}
+            >
+              Claims
+            </Button>
+          </Box>
           <Typography
             variant="h6"
             component="div"
@@ -26,7 +59,6 @@ export default function NavBar({ user, onSignOut }) {
             }}
           >
             {user ? `Welcome, ${user.name}` : "Not signed in"}
-            
           </Typography>
 
           {user && (
