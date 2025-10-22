@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   useNavigate,
+  useLocation
 } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/navBar/NavBar.jsx";
@@ -15,6 +16,7 @@ import ClaimsList from "./pages/claimsList/ClaimsList.jsx";
 function App() {
   const [user, setUser] = React.useState(null);
   const [idToken, setIdToken] = React.useState(null);
+  const location = useLocation();
 
   const navigate = useNavigate();
 
@@ -24,7 +26,16 @@ function App() {
     }
   }, [user]);
 
+  React.useEffect(() => {
+    const token = localStorage.getItem("idToken");
+    if (token) {
+      setIdToken(token);
+      handleLogin({ id_token: token });
+    }
+  }, []);
+
   const handleLogin = async (tokenResponse) => {
+    localStorage.setItem("idToken", tokenResponse.id_token);
     setIdToken(tokenResponse.id_token);
     try {
       const response = await fetch("http://localhost:8080/api/auth/me", {
@@ -50,6 +61,7 @@ function App() {
         user={user}
         onSignOut={() => {
           setUser(null);
+          localStorage.removeItem("idToken");
           navigate("/", { replace: true });
         }}
       />

@@ -90,7 +90,7 @@ public class GoogleAuthController {
 
             User user = googleAuthService.findOrCreateUser(userInfo);
             Member member = googleAuthService.findOrCreateMember(user, userInfo);
-            dummyDataService.generateDummyData(member);
+            dummyDataService.ensureDummyDataForMember(member);
 
             return ResponseEntity.ok(Map.of(
                     "tokens", tokenData,

@@ -58,7 +58,11 @@ public class DummyDataService {
                 this.claimLineRepository = claimLineRepository;
                 this.claimStatusEventRepository = claimStatusEventRepository;
         }
-
+        public void ensureDummyDataForMember(Member member) {
+                if (claimRepository.countByMember(member) == 0) {
+                        generateDummyData(member);
+                }
+        }
         @Transactional
         public void generateDummyData(Member member) {
                 // 1. PLAN
