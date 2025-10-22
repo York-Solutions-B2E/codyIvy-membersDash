@@ -15,8 +15,8 @@ export default function DashboardContainer({ dashboardData }) {
       alignItems="flex-start"
       justifyContent="center"
     >
-      <CardContainer title="Active Plan">
-        <div>
+      <CardContainer title="Active Plan" >
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           <strong>Name:</strong> {activePlan.name}
           <br />
           <strong>Network:</strong> {activePlan.networkName}
@@ -29,7 +29,7 @@ export default function DashboardContainer({ dashboardData }) {
       </CardContainer>
       <CardContainer title="Accumulators">
         {dashboardData.accumulators.map((accumulator, index) => (
-          <div key={index}>
+          <div key={index} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <strong>Type:</strong> {accumulator.type}
             <br />
             <strong>Tier:</strong> {accumulator.tier}

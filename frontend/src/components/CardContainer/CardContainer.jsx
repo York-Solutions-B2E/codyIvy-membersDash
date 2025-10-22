@@ -5,7 +5,7 @@ import CardHeader from '@mui/material/CardHeader';
 
 function CardContainer({ title, children, sx }) {
   return (
-    <Card sx={{ maxWidth: 600, margin: "1rem auto", ...sx }}>
+    <Card sx={{ justifyContent: "space-between", maxWidth: 500, flex: 1, gap: 2, minHeight: 350, margin: "1rem auto", ...sx }}>
       {title && <CardHeader title={title} />}
       <CardContent>
         {children}
