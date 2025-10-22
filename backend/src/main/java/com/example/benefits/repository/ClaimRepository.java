@@ -18,5 +18,6 @@ public interface ClaimRepository extends JpaRepository<Claim, UUID> {
 
     List<Claim> findByMember(Member member);
 
+    List<Claim> findTop5ByMemberOrderByReceivedDateDesc(Member member);
 
 }

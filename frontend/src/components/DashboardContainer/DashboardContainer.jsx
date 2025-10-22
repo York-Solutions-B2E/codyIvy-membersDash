@@ -1,6 +1,7 @@
 import React from "react";
 import CardContainer from "../CardContainer/CardContainer";
 import Box from "@mui/material/Box";
+import RecentClaimsCard from "../RecentClaimsCard/RecentClaimsCard";
 
 export default function DashboardContainer({ dashboardData }) {
   const activePlan = dashboardData?.activePlan;
@@ -9,7 +10,6 @@ export default function DashboardContainer({ dashboardData }) {
 
   return (
     <Box
-   
       display="flex"
       flexDirection="row"
       alignItems="flex-start"
@@ -41,6 +41,7 @@ export default function DashboardContainer({ dashboardData }) {
           </div>
         ))}
       </CardContainer>
+      <RecentClaimsCard claims={dashboardData.recentClaims} />
     </Box>
   );
 }

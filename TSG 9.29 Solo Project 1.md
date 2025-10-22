@@ -1,4 +1,3 @@
-
 # Member Benefits Dashboard — **4‑Screen Assessment Spec (2‑Week Scope, Federated Auth)**
 
 **Core tech stack:** React (frontend), Java + Spring Boot (backend), Postgres (database)  
@@ -12,6 +11,7 @@
 ## 1) Domain Background (Healthcare Claims 101 — Short Primer)
 
 ### Core Concepts
+
 - **Member:** Person enrolled in a health plan. May have dependents (out of scope for core).
 - **Provider:** Clinic or clinician who renders care.
 - **Plan:** The product the member is enrolled in (e.g., PPO/HMO) with cost‑share rules.
@@ -20,19 +20,23 @@
 - **Accumulators:** Running totals of a member’s financial responsibility against plan limits (e.g., **Deductible** and **Out‑of‑Pocket Maximum**).
 
 ### Simplified Processing Flow
-1. Member receives care → provider submits claim.  
-2. Claim is **adjudicated** against plan rules: allowed amount is calculated; cost shares (copay, coinsurance, deductible) are applied.  
-3. Claim reaches a status (e.g., **Submitted → In Review → Processed → Paid/Denied**).  
+
+1. Member receives care → provider submits claim.
+2. Claim is **adjudicated** against plan rules: allowed amount is calculated; cost shares (copay, coinsurance, deductible) are applied.
+3. Claim reaches a status (e.g., **Submitted → In Review → Processed → Paid/Denied**).
 4. Member responsibility and accumulators update; an EOB may be generated.
 
 ### Why build a new dashboard?
+
 **Legacy pain** (what the hypothetical client has today):
+
 - Fragmented systems → inconsistent totals between pages.
 - No robust filtering or sorting → members cannot find specific visits.
 - Non‑responsive UI with accessibility gaps.
 - Batched PDFs only (EOB) and little inline explanation of totals.
 
 **New approach** (what you’ll build):
+
 - Unified domain model (claims, lines, accumulators, provider, plan) serviced by simple REST APIs.
 - Fast, filterable **Claims List** with server‑side pagination.
 - Clear **Dashboard** with accumulator progress + recent claims.
@@ -43,10 +47,10 @@
 
 ## 2) Application Scope (Exactly 4 Screens)
 
-- **S1:** Login (**Federated/OIDC**)  
-- **S2:** Dashboard  
-- **S3:** Claims List  
-- **S4:** Claim Detail  
+- **S1:** Login (**Federated/OIDC**)
+- **S2:** Dashboard
+- **S3:** Claims List
+- **S4:** Claim Detail
 
 > **Global UI (not a separate screen):** App header with product name, member name, and **Sign out**; a simple top nav or breadcrumb to reach **Dashboard** and **Claims**.
 
@@ -55,17 +59,20 @@
 ## 3) Screen Specifications (User Story, Acceptance Criteria, ASCII Mockup)
 
 ### S1) Login (Federated/OIDC)
+
 **User Story**  
 As a member, I want to sign in with my organization/Google account so only I can view my claims.
 
 **Acceptance Criteria**
-- AC1: The login view provides a **“Continue with Google”** (or chosen IDP) action that starts the **OIDC Authorization Code Flow** (no email/password fields rendered by the app).  
-- AC2: On successful IDP callback, the app stores the session/token and routes the user to **Dashboard**.  
-- AC3: On authentication error, show a non‑blocking inline message and allow retry.  
-- AC4: Protected routes redirect unauthenticated users to the **OIDC sign‑in**.  
+
+- AC1: The login view provides a **“Continue with Google”** (or chosen IDP) action that starts the **OIDC Authorization Code Flow** (no email/password fields rendered by the app).
+- AC2: On successful IDP callback, the app stores the session/token and routes the user to **Dashboard**.
+- AC3: On authentication error, show a non‑blocking inline message and allow retry.
+- AC4: Protected routes redirect unauthenticated users to the **OIDC sign‑in**.
 - AC5: **Sign out** clears tokens and, if supported, calls the IDP **end‑session** endpoint, then returns to the login view.
 
 **ASCII Mockup**
+
 ```
 +-----------------------------------+
 |  Member Benefits Dashboard        |
@@ -79,10 +86,12 @@ As a member, I want to sign in with my organization/Google account so only I can
 ---
 
 ### S2) Dashboard
+
 **User Story**  
 As a member, I want to see my plan and accumulators with recent claims so I can understand my status at a glance.
 
 **Acceptance Criteria**
+
 - AC1: Show **active plan** (name, network) and **coverage period**.
 - AC2: Show **Deductible** and **OOP Max** progress (used vs. limit) for in‑network.
 - AC3: Show **Recent Claims** (latest 5) with status and member responsibility.
@@ -90,6 +99,7 @@ As a member, I want to see my plan and accumulators with recent claims so I can 
 - AC5: **View All Claims** navigates to **Claims List**.
 
 **ASCII Mockup**
+
 ```
 +--------------------------------------------------------------------------------+
 | Dashboard                               [ John Smith ]               (Sign out)|
@@ -101,17 +111,19 @@ As a member, I want to see my plan and accumulators with recent claims so I can 
 |                                                   | #C-10375  In Review $—   |
 |                                                   | #C-10312  Paid     $60   |
 +-------------------+--------------------------------+---------------------------+
-| [ View All Claims ]                                                            
+| [ View All Claims ]
 +--------------------------------------------------------------------------------+
 ```
 
 ---
 
 ### S3) Claims List
+
 **User Story**  
 As a member, I want to filter and browse my claims so I can find the visit I’m looking for.
 
 **Acceptance Criteria**
+
 - AC1: Table columns: **Claim #**, **Service Dates**, **Provider**, **Status**, **Member Responsibility**.
 - AC2: Filters: **Status** (multi‑select), **Date Range**, **Provider (text)**, **Claim # (exact)**.
 - AC3: Default sort by **processed/received date (desc)**.
@@ -120,6 +132,7 @@ As a member, I want to filter and browse my claims so I can find the visit I’m
 - AC6: Empty state when no matches are found.
 
 **ASCII Mockup**
+
 ```
 +--------------------------------------------------------------------------------+
 | Claims                         [ John Smith ]                        (Sign out)|
@@ -138,10 +151,12 @@ As a member, I want to filter and browse my claims so I can find the visit I’m
 ---
 
 ### S4) Claim Detail
+
 **User Story**  
 As a member, I want to see a claim’s status and financial breakdown so I can understand what I owe and why.
 
 **Acceptance Criteria**
+
 - AC1: Header shows **Claim #**, **Status**, **Service Dates**, **Provider**.
 - AC2: **Status timeline** shows key states with timestamps.
 - AC3: **Financial summary**: Total Billed, Allowed, Plan Paid, Member Responsibility.
@@ -150,16 +165,17 @@ As a member, I want to see a claim’s status and financial breakdown so I can u
 - AC6: (Stretch) **Download EOB** link (mock PDF) when available.
 
 **ASCII Mockup**
+
 ```
 +--------------------------------------------------------------------------------+
 | Claim #C-10421     Provider: River Clinic       Service: 08/29–08/29           |
 | Status: Processed   [Submitted]—[In Review]—[Processed]—[Paid]                  |
 +--------------------------------------------------------------------------------+
-| Financial Summary                                                               
-| • Total Billed:          $300.00                                                
-| • Allowed Amount:        $200.00                                                
-| • Plan Paid:             $155.00                                                
-| • Member Responsibility:  $45.00                                                
+| Financial Summary
+| • Total Billed:          $300.00
+| • Allowed Amount:        $200.00
+| • Plan Paid:             $155.00
+| • Member Responsibility:  $45.00
 +--------------------------------------------------------------------------------+
 | Line Items                                                                    |
 | CPT   | Description               | Billed | Allowed | Ded | Copay | Coins | You|
@@ -177,6 +193,7 @@ As a member, I want to see a claim’s status and financial breakdown so I can u
 > Implement with JPA/Hibernate (or similar). Monetary amounts as `BigDecimal`. Dates as `LocalDate`; timestamps as `OffsetDateTime`/`Instant`. Keep it minimal but complete for the 4 screens.
 
 ### Enums
+
 ```java
 public enum ClaimStatus { SUBMITTED, IN_REVIEW, PROCESSED, PAID, DENIED }
 public enum AccumulatorType { DEDUCTIBLE, OOP_MAX }
@@ -187,6 +204,7 @@ public enum PlanType { HMO, PPO, EPO, HDHP }
 ### Core Entities
 
 **User** (updated for federated auth; no password storage)
+
 ```java
 class User {
   UUID id;
@@ -199,6 +217,7 @@ class User {
 ```
 
 **Member**
+
 ```java
 class Member {
   UUID id;
@@ -214,6 +233,7 @@ class Member {
 ```
 
 **Address (Embeddable)**
+
 ```java
 class Address {
   String line1;
@@ -225,6 +245,7 @@ class Address {
 ```
 
 **Plan**
+
 ```java
 class Plan {
   UUID id;
@@ -236,6 +257,7 @@ class Plan {
 ```
 
 **Enrollment**
+
 ```java
 class Enrollment {
   UUID id;
@@ -249,6 +271,7 @@ class Enrollment {
 ```
 
 **Accumulator**
+
 ```java
 class Accumulator {
   UUID id;
@@ -261,6 +284,7 @@ class Accumulator {
 ```
 
 **Provider**
+
 ```java
 class Provider {
   UUID id;
@@ -272,6 +296,7 @@ class Provider {
 ```
 
 **Claim**
+
 ```java
 class Claim {
   UUID id;
@@ -293,6 +318,7 @@ class Claim {
 ```
 
 **ClaimLine**
+
 ```java
 class ClaimLine {
   UUID id;
@@ -311,6 +337,7 @@ class ClaimLine {
 ```
 
 **ClaimStatusEvent**
+
 ```java
 class ClaimStatusEvent {
   UUID id;
@@ -321,7 +348,8 @@ class ClaimStatusEvent {
 }
 ```
 
-*(Stretch model — optional)*
+_(Stretch model — optional)_
+
 ```java
 class Document {
   UUID id;
@@ -341,41 +369,49 @@ class Document {
 > Keep payloads small and tailored to the screens. Use pagination on list endpoints.
 
 - **Auth (Federated/OIDC)**
-  - **No local login/logout endpoints.** Frontend initiates OIDC; backend is an **OAuth2 Resource Server** validating JWT access tokens (issuer, audience, JWKs).  
+
+  - **No local login/logout endpoints.** Frontend initiates OIDC; backend is an **OAuth2 Resource Server** validating JWT access tokens (issuer, audience, JWKs).
   - `GET /api/auth/me` → current user + member basic info (derived from token + DB mapping).
 
 - **Dashboard**
+
   - `GET /api/dashboard` → active plan, accumulators (in‑network), recent claims (5)
 
 - **Claims**
   - `GET /api/claims?status=&startDate=&endDate=&provider=&claimNumber=&page=&size=`
   - `GET /api/claims/{claimNumber}` → detail with lines + statusHistory
-  - *(Stretch)* `GET /api/claims/{claimNumber}/eob` → PDF
+  - _(Stretch)_ `GET /api/claims/{claimNumber}/eob` → PDF
 
 ---
 
 ## 6) Nice‑to‑Haves / Stretch Goals
 
 - **Automated Tests**
+
   - Backend: JUnit + Spring Test for services/controllers/repos.
   - Frontend: React Testing Library for table filtering, routing, and detail view.
 
 - **Dockerization**
+
   - Containerize **frontend**, **backend**, and **postgres**; provide `docker-compose.yml` for local run.
 
 - **GraphQL Endpoint**
+
   - Add GraphQL with queries like `member(id)`, `claims(...)`, and `claim(claimNumber)`.
   - Swap **Dashboard** and **Claim Detail** data fetches to GraphQL while keeping REST for auth.
 
 - **Performance & UX**
+
   - HTTP caching headers on read endpoints; skeleton loaders; optimistic UI for minor updates (if any).
 
 - **Security (updated)**
-  - Configure Spring Security **OAuth2 Resource Server** (JWT).  
-  - Map **OIDC `sub`** (and provider) to your `User` and associated `Member`; enforce per‑member data access.  
+
+  - Configure Spring Security **OAuth2 Resource Server** (JWT).
+  - Map **OIDC `sub`** (and provider) to your `User` and associated `Member`; enforce per‑member data access.
   - No password storage or hashing in the app; identity is externalized to the IDP.
 
 - **Accessibility**
+
   - Keyboard navigation, focus management on route change, aria‑labels and error associations.
 
 - **Observability**
@@ -395,34 +431,32 @@ class Document {
 
 ## 8) Deliverables
 
-- **README** with setup/run instructions and **OIDC configuration** (issuer URL, client ID, redirect URI), plus directions for using Google or an alternative IDP.  
-- **Frontend (React)** with the 4 screens above and routing.  
-- **Backend (Spring Boot)** with minimal REST (and optional GraphQL).  
-- **Postgres** schema via ORM/migrations; migration files checked in.  
-- *(Optional)* Docker Compose to run everything locally.  
+- **README** with setup/run instructions and **OIDC configuration** (issuer URL, client ID, redirect URI), plus directions for using Google or an alternative IDP.
+- **Frontend (React)** with the 4 screens above and routing.
+- **Backend (Spring Boot)** with minimal REST (and optional GraphQL).
+- **Postgres** schema via ORM/migrations; migration files checked in.
+- _(Optional)_ Docker Compose to run everything locally.
 - Tests and/or screenshots of passing tests where implemented.
 
 ---
 
 ## 9) Acceptance Test Ideas (Spot‑Checks)
 
-- **Sign in via IDP (e.g., Google)** → app lands on Dashboard; refresh preserves session.  
-- Dashboard shows the expected accumulators and top 5 recent claims.  
-- Claims List filter by **Status=Processed** + date range returns expected rows; pagination works.  
-- Claim Detail totals equal the sum of line items; status timeline shows ordered history.  
-- *(Stretch)* EOB download returns a PDF for that claim.  
+- **Sign in via IDP (e.g., Google)** → app lands on Dashboard; refresh preserves session.
+- Dashboard shows the expected accumulators and top 5 recent claims.
+- Claims List filter by **Status=Processed** + date range returns expected rows; pagination works.
+- Claim Detail totals equal the sum of line items; status timeline shows ordered history.
+- _(Stretch)_ EOB download returns a PDF for that claim.
 - Unauthenticated users are redirected to IDP sign‑in from protected routes.
 
 ---
 
 **End of 4‑Screen Spec (Federated Auth)**
 
-
-
 Oauth1-----
 client ID = 972231826627-5nr09gt1st5l5o5r2vkvdgeanhhkok7n.apps.googleusercontent.com
 
-client secret = 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
+client secret = GOCSPX-\_QMfr87r62L91E4dwJA2px3hT4KG
 
 backend----
 id = 972231826627-m8prcdhvug72smfskigpnq667u2inp9k.apps.googleusercontent.com

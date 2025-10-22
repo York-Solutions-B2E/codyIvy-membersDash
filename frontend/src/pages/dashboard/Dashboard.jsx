@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import DashboardContainer from "../../components/DashboardContainer/DashboardContainer";
+import Button from "@mui/material/Button";
 
 export default function Dashboard({ idToken }) {
   const [dashboardData, setDashboardData] = React.useState(null);
@@ -29,6 +30,9 @@ export default function Dashboard({ idToken }) {
       ) : (
         <div>Loading dashboard...</div>
       )}
+      <Button variant="contained" color="primary">
+        View All Claims
+      </Button>
     </div>
   );
 }

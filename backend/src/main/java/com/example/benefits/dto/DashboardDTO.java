@@ -9,6 +9,6 @@ import lombok.*;
 public class DashboardDTO {
     private ActivePlanDTO activePlan;
     private List<AccumulatorDTO> accumulators;
-    // private List<ClaimSummaryDTO> recentClaims;
+    private List<ClaimSummaryDTO> recentClaims;
 
 }
