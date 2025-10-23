@@ -1,22 +1,9 @@
 package com.example.benefits.service;
 
-import com.example.benefits.model.Member;
-
-import com.example.benefits.repository.AccumulatorRepository;
-import com.example.benefits.repository.ClaimRepository;
-import com.example.benefits.repository.ClaimStatusEventRepository;
-import com.example.benefits.repository.EnrollmentRepository;
-import com.example.benefits.repository.PlanRepository;
-import com.example.benefits.repository.ProviderRepository;
+import com.example.benefits.repository.*;
+import com.example.benefits.model.*;
 
 import jakarta.transaction.Transactional;
-
-import com.example.benefits.repository.ClaimLineRepository;
-import com.example.benefits.model.Accumulator;
-import com.example.benefits.model.Enrollment;
-import com.example.benefits.model.Plan;
-import com.example.benefits.model.PlanType;
-import com.example.benefits.model.Provider;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,13 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
-import com.example.benefits.model.NetworkTier;
-import com.example.benefits.model.AccumulatorType;
-import com.example.benefits.model.ClaimStatus;
-import com.example.benefits.model.ClaimStatusEvent;
-import com.example.benefits.model.Claim;
-import com.example.benefits.model.ClaimLine;
 
 @Service
 public class DummyDataService {
@@ -58,11 +38,13 @@ public class DummyDataService {
                 this.claimLineRepository = claimLineRepository;
                 this.claimStatusEventRepository = claimStatusEventRepository;
         }
+
         public void ensureDummyDataForMember(Member member) {
                 if (claimRepository.countByMember(member) == 0) {
                         generateDummyData(member);
                 }
         }
+
         @Transactional
         public void generateDummyData(Member member) {
                 // 1. PLAN

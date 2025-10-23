@@ -17,7 +17,7 @@ export default function Dashboard({ idToken }) {
       .then(async (res) => await res.json())
       .then((data) => {
         setDashboardData(data);
-        console.log("Dashboard data:", data);
+       
       })
       .catch((err) => {
         console.error("Error fetching dashboard data:", err);

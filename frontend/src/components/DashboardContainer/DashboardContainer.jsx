@@ -7,7 +7,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 export default function DashboardContainer({ dashboardData }) {
   const activePlan = dashboardData?.activePlan;
   if (!activePlan) return null;
-  console.log("Active Plan:", dashboardData);
+
   const percent = Math.round((dashboardData.accumulators[0].usedAmount / dashboardData.accumulators[0].limitAmount) * 100);
 
   return (

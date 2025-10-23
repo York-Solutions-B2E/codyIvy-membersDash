@@ -26,7 +26,6 @@ export default function ClaimsList({ idToken }) {
       })
       .then((data) => {
         setClaims(data.content); // Spring Page<T> wraps results in .content
-        console.log("Fetched claims:", data.content);
       })
       .catch((error) => {
         console.error("Failed to fetch claims:", error);
