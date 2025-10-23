@@ -23,6 +23,8 @@ public interface ClaimRepository extends JpaRepository<Claim, UUID> {
 
     List<Claim> findTop5ByMemberOrderByReceivedDateDesc(Member member);
 
+    Claim findByClaimNumberAndMember(String claimNumber, Member member);
+
     int countByMember(Member member);
 
 }

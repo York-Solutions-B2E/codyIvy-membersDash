@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   Table,
@@ -13,6 +14,7 @@ import {
 export default function ClaimsList({ idToken }) {
   const [claims, setClaims] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/api/claims?page=0&size=10", {
@@ -32,6 +34,10 @@ export default function ClaimsList({ idToken }) {
       })
       .finally(() => setLoading(false));
   }, []);
+
+  const handleClaimClick = (claimNumber) => {
+    navigate(`/claims/${claimNumber}`);
+  };
 
   if (loading) return <div>Loading...</div>;
 
@@ -54,9 +60,12 @@ export default function ClaimsList({ idToken }) {
             {claims.map((claim) => (
               <TableRow
                 key={claim.claimNumber}
+                onClick={() => handleClaimClick(claim.claimNumber)}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   borderBottom: "2px solid #eee",
+                  cursor: "pointer",
+                  "&:hover": { backgroundColor: "#f5f5f5" },
                 }}
               >
                 <TableCell>{claim.claimNumber}</TableCell>

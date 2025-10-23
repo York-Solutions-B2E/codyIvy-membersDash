@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
@@ -86,16 +87,21 @@ public class DummyDataService {
                 provider = providerRepository.save(provider);
 
                 // 5. CLAIMS
+                ClaimStatus[] statuses = ClaimStatus.values();
+                Random random = new Random();
                 List<Claim> claims = new ArrayList<>();
+                
                 for (int i = 1; i <= 8; i++) {
+                        ClaimStatus randomStatus = statuses[random.nextInt(statuses.length)];
+                        
                         Claim claim = Claim.builder()
                                         .claimNumber(String.format("CLM-%04d", i))
                                         .member(member)
                                         .provider(provider)
-                                        .serviceStartDate(LocalDate.now().minusDays(10 * i))
-                                        .serviceEndDate(LocalDate.now().minusDays(10 * i - 5))
-                                        .receivedDate(LocalDate.now().minusDays(10 * i - 3))
-                                        .status(ClaimStatus.SUBMITTED)
+                                        .serviceStartDate(LocalDate.now().minusDays(10L * i))
+                                        .serviceEndDate(LocalDate.now().minusDays(10L * i - 5))
+                                        .receivedDate(LocalDate.now().minusDays(10L * i - 3))
+                                        .status(randomStatus)
                                         .totalBilled(new BigDecimal(1000 + 100 * i + ".00"))
                                         .totalAllowed(new BigDecimal(800 + 50 * i + ".00"))
                                         .totalPlanPaid(new BigDecimal(600 + 20 * i + ".00"))
