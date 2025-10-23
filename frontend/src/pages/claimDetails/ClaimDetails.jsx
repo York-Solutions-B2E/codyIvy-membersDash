@@ -114,9 +114,9 @@ export default function ClaimDetails() {
                   <TableCell>Description</TableCell>
                   <TableCell align="right">Billed</TableCell>
                   <TableCell align="right">Allowed</TableCell>
-                  <TableCell align="right">Ded</TableCell>
+                  <TableCell align="right">Deductible</TableCell>
                   <TableCell align="right">Copay</TableCell>
-                  <TableCell align="right">Coins</TableCell>
+                  <TableCell align="right">Coinsurance</TableCell>
                   <TableCell align="right">You</TableCell>
                 </TableRow>
               </TableHead>

@@ -98,9 +98,9 @@ public class DummyDataService {
                                         .claimNumber(String.format("CLM-%04d", i))
                                         .member(member)
                                         .provider(provider)
-                                        .serviceStartDate(LocalDate.now().minusDays(10L * i))
-                                        .serviceEndDate(LocalDate.now().minusDays(10L * i - 5))
-                                        .receivedDate(LocalDate.now().minusDays(10L * i - 3))
+                                        .serviceStartDate(LocalDate.now().minusDays(10L * (9 - i)))
+                                        .serviceEndDate(LocalDate.now().minusDays(10L * (9 - i) - 5))
+                                        .receivedDate(LocalDate.now().minusDays(10L * (9 - i) - 3))
                                         .status(randomStatus)
                                         .totalBilled(new BigDecimal(1000 + 100 * i + ".00"))
                                         .totalAllowed(new BigDecimal(800 + 50 * i + ".00"))
@@ -111,21 +111,44 @@ public class DummyDataService {
                         claim = claimRepository.save(claim);
                         claims.add(claim);
 
-                        // 6. CLAIM LINES
-                        ClaimLine line = ClaimLine.builder()
-                                        .claim(claim)
-                                        .lineNumber(1)
-                                        .cptCode("99213")
-                                        .description("Office visit")
-                                        .billedAmount(new BigDecimal("450.00"))
-                                        .allowedAmount(new BigDecimal("400.00"))
-                                        .deductibleApplied(new BigDecimal("50.00"))
-                                        .copayApplied(new BigDecimal("20.00"))
-                                        .coinsuranceApplied(new BigDecimal("10.00"))
-                                        .planPaid(new BigDecimal("320.00"))
-                                        .memberResponsibility(new BigDecimal("80.00"))
-                                        .build();
-                        claimLineRepository.save(line);
+                        // 6. CLAIM LINES (2-3 per claim)
+                        String[][] cptData = {
+                                {"99213", "Office Visit, Established Patient", "150.00", "120.00"},
+                                {"81002", "Urinalysis", "50.00", "40.00"},
+                                {"85025", "Blood Count", "75.00", "60.00"},
+                                {"80053", "Comprehensive Metabolic Panel", "120.00", "95.00"},
+                                {"93000", "Electrocardiogram", "100.00", "80.00"},
+                                {"36415", "Blood Draw", "25.00", "20.00"}
+                        };
+                        
+                        int numLines = 2 + random.nextInt(2); // 2 or 3 lines per claim
+                        
+                        for (int lineNum = 1; lineNum <= numLines; lineNum++) {
+                                String[] selectedCpt = cptData[random.nextInt(cptData.length)];
+                                
+                                BigDecimal billed = new BigDecimal(selectedCpt[2]);
+                                BigDecimal allowed = new BigDecimal(selectedCpt[3]);
+                                BigDecimal deductible = new BigDecimal(random.nextInt(21) + ".00"); // 0-20
+                                BigDecimal copay = new BigDecimal(random.nextInt(26) + ".00"); // 0-25
+                                BigDecimal coinsurance = new BigDecimal(random.nextInt(16) + ".00"); // 0-15
+                                BigDecimal planPaid = allowed.subtract(deductible).subtract(copay).subtract(coinsurance);
+                                BigDecimal memberResp = deductible.add(copay).add(coinsurance);
+                                
+                                ClaimLine line = ClaimLine.builder()
+                                                .claim(claim)
+                                                .lineNumber(lineNum)
+                                                .cptCode(selectedCpt[0])
+                                                .description(selectedCpt[1])
+                                                .billedAmount(billed)
+                                                .allowedAmount(allowed)
+                                                .deductibleApplied(deductible)
+                                                .copayApplied(copay)
+                                                .coinsuranceApplied(coinsurance)
+                                                .planPaid(planPaid)
+                                                .memberResponsibility(memberResp)
+                                                .build();
+                                claimLineRepository.save(line);
+                        }
 
                         // 7. CLAIM STATUS EVENTS
                         ClaimStatusEvent event = ClaimStatusEvent.builder()
