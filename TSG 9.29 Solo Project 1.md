@@ -453,11 +453,3 @@ class Document {
 
 **End of 4‑Screen Spec (Federated Auth)**
 
-Oauth1-----
-client ID = 972231826627-5nr09gt1st5l5o5r2vkvdgeanhhkok7n.apps.googleusercontent.com
-
-client secret = GOCSPX-\_QMfr87r62L91E4dwJA2px3hT4KG
-
-backend----
-id = 972231826627-m8prcdhvug72smfskigpnq667u2inp9k.apps.googleusercontent.com
-secret = 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

@@ -131,8 +131,12 @@ VITE_GOOGLE_CLIENT_ID=your_google_client_id_here
 #### Start the Backend
 ```bash
 cd backend
-./mvnw spring-boot:run
+
+# Load environment variables from .env file and start the backend
+export $(grep -v '^#' .env | xargs) && ./mvnw spring-boot:run
 ```
+
+> **Note**: The `export` command loads your OAuth credentials from the `.env` file before starting Spring Boot.
 
 The backend will be available at `http://localhost:8080`
 
