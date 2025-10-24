@@ -1,29 +1,23 @@
 package com.example.benefits.service;
 
-import com.example.benefits.repository.MemberRepository;
-import com.example.benefits.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Value;
-
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
-import com.example.benefits.model.User;
-import com.example.benefits.model.Member;
-import com.example.benefits.service.DummyDataService;
-
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import com.example.benefits.model.GoogleAuthException;
 
+import java.util.Map;
+
+import com.example.benefits.repository.MemberRepository;
+import com.example.benefits.repository.UserRepository;
+import com.example.benefits.model.User;
+import com.example.benefits.model.Member;
+import com.example.benefits.model.GoogleAuthException;
 
 @Service
 public class GoogleAuthService {
@@ -60,9 +54,9 @@ public class GoogleAuthService {
         Map<String, Object> tokenData = exchangeCodeForTokens(code);
 
         String accessToken = (String) tokenData.get("access_token");
-         if (accessToken == null) {
-        throw new GoogleAuthException("No access token received from Google");
-    }
+        if (accessToken == null) {
+            throw new GoogleAuthException("No access token received from Google");
+        }
         Map<String, Object> userInfo = fetchUserInfoFromGoogle(accessToken);
 
         User user = findOrCreateUser(userInfo);
@@ -70,9 +64,8 @@ public class GoogleAuthService {
         dummyDataService.ensureDummyDataForMember(member);
 
         return Map.of(
-            "tokens", tokenData,
-            "user_info", userInfo
-        );
+                "tokens", tokenData,
+                "user_info", userInfo);
     }
 
     private Map<String, Object> exchangeCodeForTokens(String code) {
@@ -110,7 +103,7 @@ public class GoogleAuthService {
 
     private Map<String, Object> fetchUserInfoFromGoogle(String accessToken) {
         HttpHeaders userInfoHeaders = new HttpHeaders();
-        userInfoHeaders.setBearerAuth(accessToken);  // ← Using the access token here
+        userInfoHeaders.setBearerAuth(accessToken); // ← Using the access token here
         HttpEntity<Void> userInfoRequest = new HttpEntity<>(userInfoHeaders);
 
         try {

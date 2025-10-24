@@ -1,7 +1,7 @@
 package com.example.benefits.repository;
 
 import com.example.benefits.model.Claim;
-import com.example.benefits.model.ClaimLine;
+
 import com.example.benefits.model.ClaimStatusEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;

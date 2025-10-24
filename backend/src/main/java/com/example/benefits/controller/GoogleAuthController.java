@@ -1,18 +1,10 @@
 package com.example.benefits.controller;
 
-
-
 import org.springframework.http.*;
-
-
-
 import org.springframework.web.bind.annotation.*;
-
 
 import com.example.benefits.dto.GoogleAuthRequest;
 import com.example.benefits.service.GoogleAuthService;
-
-
 
 import java.util.Map;
 
@@ -24,7 +16,7 @@ public class GoogleAuthController {
 
     public GoogleAuthController(GoogleAuthService googleAuthService) {
         this.googleAuthService = googleAuthService;
-  
+
     }
 
     @PostMapping
