@@ -99,26 +99,58 @@ This will start a PostgreSQL container with:
 - Password: `devpass`
 - Port: `5432`
 
+### 3. Google Cloud Console Setup
 
-### 3. Environment Setup
+Before configuring the application, you need to create OAuth credentials in Google Cloud Console:
+
+#### Step 1: Create a Google Cloud Project
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Click **"Select a project"** → **"New Project"**
+3. Enter a project name (e.g., "Member Benefits App")
+4. Click **"Create"**
+
+#### Step 2: Enable Google+ API
+1. In your project, go to **"APIs & Services"** → **"Library"**
+2. Search for **"Google+ API"** or **"People API"**
+3. Click on it and press **"Enable"**
+
+#### Step 3: Create OAuth 2.0 Credentials
+1. Go to **"APIs & Services"** → **"Credentials"**
+2. Click **"Create Credentials"** → **"OAuth 2.0 Client IDs"**
+3. If prompted, configure the **OAuth consent screen** first:
+   - Choose **"External"** user type
+   - Fill in required fields (App name, User support email, Developer email)
+   - Add your email to **"Test users"** section
+4. For **Application type**, select **"Web application"**
+5. Add these **Authorized redirect URIs** (for local development):
+   - `http://localhost:5173` (frontend - where Google redirects after auth)
+
+> **Important**: Only add the frontend URL. The frontend handles the OAuth callback and then communicates with the backend API.
+
+6. Click **"Create"**
+7. **Copy your Client ID and Client Secret** - you'll need these for the `.env` files
+
+### 4. Environment Setup
 
 #### Backend Configuration
-1. Copy the environment template:
+1. Create the environment file:
 ```bash
-cp backend/.env.example backend/.env
+cd backend
+cp .env.example .env
 ```
 
 2. Edit `backend/.env` with your Google OAuth credentials:
 ```env
 GOOGLE_CLIENT_ID=your_google_client_id_here
 GOOGLE_CLIENT_SECRET=your_google_client_secret_here
-JWT_SECRET=your_jwt_secret_here
+GOOGLE_REDIRECT_URI=http://localhost:5173
 ```
 
 #### Frontend Configuration
-1. Copy the environment template:
+1. Create the environment file:
 ```bash
-cp frontend/.env.example frontend/.env
+cd frontend
+cp .env.example .env
 ```
 
 2. Edit `frontend/.env` with your Google Client ID:
@@ -126,7 +158,7 @@ cp frontend/.env.example frontend/.env
 VITE_GOOGLE_CLIENT_ID=your_google_client_id_here
 ```
 
-### 4. Backend Setup
+### 5. Backend Setup
 
 #### Start the Backend
 ```bash
@@ -140,7 +172,7 @@ export $(grep -v '^#' .env | xargs) && ./mvnw spring-boot:run
 
 The backend will be available at `http://localhost:8080`
 
-### 5. Frontend Setup
+### 6. Frontend Setup
 
 #### Install Dependencies
 ```bash
@@ -228,3 +260,22 @@ codyivy-members/
 - **Auto-reload** - Both frontend and backend support hot reloading during development
 - **Test Data Generation** - Automatic dummy data creation for new users
 - **Database Recreation** - Database schema is recreated on each startup for development
+
+## 🚨 Troubleshooting
+
+### OAuth Redirect URI Mismatch Error
+
+If you get a "redirect_uri_mismatch" error, ensure your Google Cloud Console settings match exactly:
+
+1. In Google Cloud Console → **APIs & Services** → **Credentials**
+2. Edit your OAuth 2.0 Client ID
+3. In **Authorized redirect URIs**, make sure you have:
+   - `http://localhost:5173` (this is where Google redirects after authentication)
+
+> **Note**: The app is configured to redirect to the frontend (`localhost:5173`), not the backend. The frontend then handles the OAuth response and communicates with the backend API.
+
+### Common Issues:
+- ✅ **Correct**: `http://localhost:5173`
+- ❌ **Wrong**: `http://localhost:8080/api/auth/google/callback`
+- ❌ **Wrong**: `https://localhost:5173` (no HTTPS in development)
+- ❌ **Wrong**: Missing the exact port number
