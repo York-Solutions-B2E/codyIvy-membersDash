@@ -122,7 +122,7 @@ Before configuring the application, you need to create OAuth credentials in Goog
    - Fill in required fields (App name, User support email, Developer email)
    - Add your email to **"Test users"** section
 4. For **Application type**, select **"Web application"**
-5. Add these **Authorized redirect URIs** (for local development):
+5. Add these **Authorized redirect URIs** and **Origin** (for local development):
    - `http://localhost:5173` (frontend - where Google redirects after auth)
 
 > **Important**: Only add the frontend URL. The frontend handles the OAuth callback and then communicates with the backend API.
@@ -146,6 +146,8 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret_here
 GOOGLE_REDIRECT_URI=http://localhost:5173
 ```
 
+Note if this part is just not working for you, you can add the credentinals to the application.properties file directly.
+
 #### Frontend Configuration
 1. Create the environment file:
 ```bash
@@ -168,7 +170,14 @@ cd backend
 export $(grep -v '^#' .env | xargs) && ./mvnw spring-boot:run
 ```
 
-> **Note**: The `export` command loads your OAuth credentials from the `.env` file before starting Spring Boot.
+**For Windows PowerShell:**
+```shell
+cd backend
+Get-Content .env | ForEach-Object { if($_ -match '^([^#].*)=(.*)$') { [Environment]::SetEnvironmentVariable($matches[1], $matches[2], 'Process') } }
+./mvnw spring-boot:run
+```
+
+> **Note**: The `export` command loads your OAuth credentials from the `.env` file before starting Spring Boot. If your credentials are hardcoded into the application.properties file you dont need the export commands. simple run ./mvnw spring-boot:run
 
 The backend will be available at `http://localhost:8080`
 
